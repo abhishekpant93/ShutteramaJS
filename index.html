@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <title>ShutteramaJS</title>
+
+  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+  <link href="css/ui-lightness/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" media="screen">
+  <link href="css/shutterama.css" rel="stylesheet" media="screen"/>
+
+  <script src="js/libraries/jquery-1.9.1.js"></script>
+  <script src="js/libraries/jquery-ui-1.10.1.custom.min.js"></script>
+  <script src="js/libraries/yepnope.1.5.4-min.js"></script>
+  <script src="js/libraries/mustache.js"></script>
+  <script src="js/filters/filterutils.js"></script>
+  <script src="js/shutterama.js"></script>
+
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="">Shutterama</a>
+
+        <ul class="nav">
+          <li><a id="reset" href="#">Reset</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="span8">
+        <div id = "imageDrop">Drag & Drop an image file here.</div>
+        <canvas id ="imageCanvas"></canvas>
+      </div>
+      <div class="span4">
+        <fieldset>
+          <legend>Choose a filter:</legend>
+
+          <form class="form-horizontal">
+
+            <div class="control-group"
+              <label class="control-label" for="selectFilter">Filter:</label>
+              <div class="controls">
+                <select id="selectFilter">
+                <option data-file="blur.js" data-filter="BlurFilter">Blur</option>
+                <option data-file="brightness.js" data-filter="BrightnessFilter">Brightness</option>
+                <option data-file="bump.js" data-filter="BumpFilter">Bump</option>
+                <option data-file="circlesmear.js" data-filter="CircleSmearFilter">Circle Smear</option>
+                <option data-file="contrast.js" data-filter="ContrastFilter">Contrast</option>
+                <option data-file="crosssmear.js" data-filter="CrossSmearFilter">Cross Smear</option>
+                <option data-file="diffusion.js" data-filter="DiffusionFilter">Diffusion</option>
+                <option data-file="dither.js" data-filter="DitherFilter">Dither</option>
+                <option data-file="edge.js" data-filter="EdgeFilter">Edge</option>
+                <option data-file="emboss.js" data-filter="EmbossFilter">Emboss</option>
+                <option data-file="exposure.js" data-filter="ExposureFilter">Exposure</option>
+                <option data-file="gain.js" data-filter="GainFilter">Gain</option>
+                <option data-file="gamma.js" data-filter="GammaFilter">Gamma</option>
+                <option data-file="grayscale.js" data-filter="GrayscaleFilter">Grayscale</option>
+                <option data-file="hue.js" data-filter="HueFilter">Hue</option>
+                <option data-file="invert.js" data-filter="InvertFilter">Invert</option>
+                <option data-file="kaleidoscope.js" data-filter="KaleidoscopeFilter">Kaleidoscope</option>
+                <option data-file="lensdistortion.js" data-filter="LensDistortionFilter">Lens Distortion</option>
+                <option data-file="linesmear.js" data-filter="LineSmearFilter">Lens Smear</option>
+                <option data-file="maximum.js" data-filter="MaximumFilter">Maximum</option>
+                <option data-file="median.js" data-filter="MedianFilter">Median</option>
+                <option data-file="minimum.js" data-filter="MinimumFilter">Minimum</option>
+                <option data-file="noise.js" data-filter="NoiseFilter">Noise</option>
+                <option data-file="oil.js" data-filter="OilFilter">Oil</option>
+                <option data-file="opacity.js" data-filter="OpacityFilter">Opacity</option>
+                <option data-file="pinch.js" data-filter="PinchFilter">Pinch</option>
+                <option data-file="pixelation.js" data-filter="PixelationFilter">Pixelation</option>
+                <option data-file="posterize.js" data-filter="PosterizeFilter">Posterize</option>
+                <option data-file="rgbadjust.js" data-filter="RGBAdjustFilter">RGB Adjust</option>
+                <option data-file="saturation.js" data-filter="SaturationFilter">Saturation</option>
+                <option data-file="sawtoothripple.js" data-filter="SawtoothRippleFilter">Sawtooth Ripple</option>
+                <option data-file="sepia.js" data-filter="SepiaFilter">Sepia</option>
+                <option data-file="sharpen.js" data-filter="SharpenFilter">Sharpen</option>
+                <option data-file="sineripple.js" data-filter="SineRippleFilter">Sine Ripple</option>
+                <option data-file="solarize.js" data-filter="SolarizeFilter">Solarize</option>
+                <option data-file="sparkle.js" data-filter="SparkleFilter">Sparkel</option>
+                <option data-file="squaresmear.js" data-filter="SquareSmearFilter">Square Smear</option>
+                <option data-file="threshold.js" data-filter="ThresholdFilter">Threshold</option>
+                <option data-file="triangleripple.js" data-filter="TriangleRippleFilter">Triangle Ripple</option>
+                <option data-file="twirl.js" data-filter="TwirlFilter">Twirl</option>
+                <option data-file="vignette.js" data-filter="VignetteFilter">Vignette</option>
+                <option data-file="waterripple.js" data-filter="WaterRippleFilter">Water Ripple</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button id="applyFilter" class="btn-primary btn-large">Apply Filter</button>
+            </div>
+
+          </form>
+
+        </fieldset>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/mustache" id="template_properties">
+  <div class="control-group filter-property">
+  <label class="control-label" for="filter-property-{{name}}">{{label}}</label>
+  <div class="controls">
+  <div id="filter-property-{{name}}"
+  class="slider" 
+  data-name="{{name}}" 
+  data-min="{{min}}" 
+  data-max="{{max}}" 
+  data-value_default="{{value}}">
+  </div>
+  </div>
+  </div>
+  </script>
+</body>
+</html>
